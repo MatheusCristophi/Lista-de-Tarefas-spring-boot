@@ -1,53 +1,65 @@
 package com.matheus.listaDeTarefas.service;
 
 import com.matheus.listaDeTarefas.domain.tasks;
-import com.matheus.listaDeTarefas.exceptions.exceptions;
+import com.matheus.listaDeTarefas.exceptions.EmptyTaskListException;
+import com.matheus.listaDeTarefas.exceptions.InvalidTaskException;
+import com.matheus.listaDeTarefas.exceptions.TaskIdNotFoundExceptions;
 import com.matheus.listaDeTarefas.repository.repository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 
 public class service {
-    repository repository;
-    exceptions exceptions;
 
-    public service(exceptions exceptions) {
-        this.exceptions = exceptions;
-    }
+    private final repository repository;
     public service(repository repository) {
         this.repository = repository;
     }
 
-    public ResponseEntity<tasks> createTasks(tasks task) {
-        repository.saveAndFlush(task);
-        return new ResponseEntity(HttpStatus.CREATED);
+    public tasks createTasks(tasks task) {
+        if (task == null || task.getName() == null){
+            throw new InvalidTaskException();
+        }
+        return repository.saveAndFlush(task);
     }
 
-    public ResponseEntity<tasks> readAllTasks() {
-        repository.findAll();
-        return new ResponseEntity(HttpStatus.OK);
+    public List<tasks> readAllTasks() {
+       List<tasks> tasksList = repository.findAll();
+       if(tasksList.isEmpty()){
+           throw new EmptyTaskListException();
+       }
+       return tasksList;
     }
 
-    public ResponseEntity<tasks> readTaskById(Long id) {
-        repository.findById(id);
-        return new ResponseEntity(HttpStatus.OK);
+    public tasks readTaskById(Long id) {
+        if(!repository.existsById(id)){
+            throw new TaskIdNotFoundExceptions(id);
+        }else{
+            return repository.findById(id).orElseThrow(() -> new TaskIdNotFoundExceptions(id));
+        }
+    }
+
+    public tasks updateTask(Long id, tasks updateTask){
+        tasks existingTask = repository.findById(id).orElseThrow(() -> new TaskIdNotFoundExceptions(id));
+        existingTask.setName(updateTask.getName());
+        existingTask.setDescription(updateTask.getDescription());
+        existingTask.setDueDate(updateTask.getDueDate());
+        return repository.saveAndFlush(existingTask);
+    }
+
+    public void deleteAllTasks(){
+        if(repository.count() == 0){
+            throw new EmptyTaskListException();
+        }
+        repository.deleteAll();
     }
 
     public void deleteTaskById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new TaskIdNotFoundExceptions(id);
+        }
         repository.deleteById(id);
-        new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    public void deleteAllTasks() {
-        repository.deleteAll();
-        new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    public ResponseEntity<tasks> updateTaskById(Long id, tasks task) {
-        repository.findById(id);
-        repository.saveAndFlush(task);
-        return new ResponseEntity(HttpStatus.OK);
     }
 }

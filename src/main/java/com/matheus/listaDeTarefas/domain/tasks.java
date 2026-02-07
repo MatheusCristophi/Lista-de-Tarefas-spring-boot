@@ -9,8 +9,6 @@ import java.util.Date;
 @Table(name = "tasks")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Data
 
 public class tasks {
