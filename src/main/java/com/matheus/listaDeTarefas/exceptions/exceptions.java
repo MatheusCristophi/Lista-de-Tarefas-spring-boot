@@ -1,11 +1,7 @@
 package com.matheus.listaDeTarefas.exceptions;
 
-
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@RestControllerAdvice
 
 public class exceptions extends ResponseEntityExceptionHandler {
 
@@ -29,5 +25,19 @@ public class exceptions extends ResponseEntityExceptionHandler {
 
     public invalidTaskException (String message) { super(message);}
 
+    }
+
+    public class emptyTaskListException extends RuntimeException {
+
+    public emptyTaskListException() { super("Task list is empty");}
+
+    public emptyTaskListException(String message)  { super(message);}
+    }
+
+    public class cantCreateTaskException extends RuntimeException {
+
+    public cantCreateTaskException() { super("Can't create task");}
+
+    public cantCreateTaskException(String message) { super(message);}
     }
 }

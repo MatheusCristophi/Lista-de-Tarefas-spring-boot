@@ -1,6 +1,7 @@
 package com.matheus.listaDeTarefas.service;
 
 import com.matheus.listaDeTarefas.domain.tasks;
+import com.matheus.listaDeTarefas.exceptions.exceptions;
 import com.matheus.listaDeTarefas.repository.repository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,11 @@ import org.springframework.stereotype.Service;
 
 public class service {
     repository repository;
+    exceptions exceptions;
 
+    public service(exceptions exceptions) {
+        this.exceptions = exceptions;
+    }
     public service(repository repository) {
         this.repository = repository;
     }
