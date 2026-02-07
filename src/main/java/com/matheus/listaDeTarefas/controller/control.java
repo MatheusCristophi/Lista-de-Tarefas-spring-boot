@@ -36,16 +36,15 @@ public class control {
                 .body(service.createTasks(task));
     }
 
-    @DeleteMapping("/deletetaskbyid")
-    public void deleteTaskById(Long id) {
-        service.deleteTaskById(id);
-        new ResponseEntity(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/deletetaskbyid/{id}")
+    public ResponseEntity<tasks> deleteTaskById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deleteTaskById(id));
     }
 
     @DeleteMapping("/deletealltasks")
     public void deleteAllTasks() {
         service.deleteAllTasks();
-        new ResponseEntity(HttpStatus.NO_CONTENT);
+        new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/updatetaskbyid/{id}")

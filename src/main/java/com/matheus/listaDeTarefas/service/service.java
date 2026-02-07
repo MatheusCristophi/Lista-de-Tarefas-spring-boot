@@ -56,10 +56,12 @@ public class service {
         repository.deleteAll();
     }
 
-    public void deleteTaskById(Long id) {
-        if (!repository.existsById(id)) {
+    public tasks deleteTaskById(Long id) {
+        if(!repository.existsById(id)){
             throw new TaskIdNotFoundExceptions(id);
+        }else{
+            repository.deleteById(id);
+            return null;
         }
-        repository.deleteById(id);
     }
 }
