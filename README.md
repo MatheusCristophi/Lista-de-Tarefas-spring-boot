@@ -23,26 +23,6 @@ Maven	                Gerenciamento de dependências
 Banco de dados	               PostgreSql
 Lombok (opcional)	      Geração de getters/setters
 
-Estrutura de Pastas (Exemplo)
-
-src
-├── main
-│   ├── java
-│   │   └── com.exemplo.tarefas
-│   │       ├── controller
-│   │       │   └── taskControl.java
-│   │       ├── domain
-│   │       │   └── Tasks.java
-│   │       ├── repository
-│   │       │   └── TaskRepository.java
-│   │       ├── service
-│   │       │   └── TaskService.java
-│   │       ├──infra
-│   │       │   └── RestExceptionHandler.java
-│   │       └── exception
-│   │           └── AllException.java
-│   └── resources
-│       └── application.properties
 
 Testes (Opcional)
 
